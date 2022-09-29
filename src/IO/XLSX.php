@@ -47,7 +47,7 @@ class XLSX
      * @param  array $options
      * @return array
      * @throws \Archon\Exceptions\UnknownOptionException
-     * @throws \PHPExcel_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @since  0.3.0
      */
     public function loadFile(array $options)
@@ -58,7 +58,7 @@ class XLSX
         $colRowOpt = $options['colrow'];
         $sheetNameOpt = $options['sheetname'];
 
-        $xlsx = PHPExcel_IOFactory::load($fileName);
+        $xlsx = \PhpOffice\PhpSpreadsheet\IOFactory::load($fileName);
 
         if ($sheetNameOpt === null) {
             $sheet = $xlsx->getActiveSheet();
@@ -93,15 +93,15 @@ class XLSX
 
     /**
      * Converts the columns and data passed to an XLSX worksheet and adds that worksheet to an instance of PHPExcel
-     * @param  PHPExcel $excel
+     * @param \PhpOffice\PhpSpreadsheet\Spreadsheet $excel
      * @param  $worksheetTitle
      * @param  array $data
      * @param  array $columns
-     * @return PHPExcel_Worksheet
-     * @throws \PHPExcel_Exception
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @since  0.3.0
      */
-    public static function saveToWorksheet(PHPExcel &$excel, $worksheetTitle, array $data, array $columns)
+    public static function saveToWorksheet(\PhpOffice\PhpSpreadsheet\Spreadsheet &$excel, $worksheetTitle, array $data, array $columns)
     {
         // Check if this is a brand new spreadsheet
         if ($excel->getSheetCount() === 1) {
@@ -119,14 +119,14 @@ class XLSX
             }
         }
 
-        $worksheet = new PHPExcel_Worksheet($excel, $worksheetTitle);
+        $worksheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($excel, $worksheetTitle);
 
         $wsArray = [$columns];
         foreach ($data as $row) {
             $wsArray[] = array_values($row);
         }
 
-        $worksheet->fromArray($wsArray);
+        $worksheet->fromArray($wsArray, null, 'A1', false);
         $excel->addSheet($worksheet);
         return $worksheet;
     }
