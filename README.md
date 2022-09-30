@@ -12,7 +12,7 @@ Archon is a PHP library designed to make working with tabular/relational data, f
 ### Using Composer:
 
 ```sh
-composer require archon/dataframe
+composer require dcabrio/dataframe dev-master
 ```
 
 ```json
